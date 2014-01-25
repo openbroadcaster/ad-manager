@@ -1,0 +1,33 @@
+<h1>OB Ad Manager Settings</h1>
+
+<p>The OB Ad Manager works by moving media between a category designated for "enabled" ads, and a category designated 
+  for "disabled" ads.  Playlists with dynamic selections can then be used to play ads from the "enabled" category.</p>
+
+<p>Please set the "enabled" and "disabled" category as needed.</p>
+
+<p class="hidden messagebox" id="ob_ad_manager_messagebox"></p>
+
+<table class="tbmargin form_table">
+<tbody>
+<tr>
+  <td class="required">Enabled Category:</td>
+  <td><select id="ob_ad_manager_enabled_category"></select></td>
+</tr>
+<tr>
+  <td></td>
+  <td><select id="ob_ad_manager_enabled_genre"></select></td>
+</tr>
+<tr>
+  <td class="required">Disabled Category:</td>
+  <td><select id="ob_ad_manager_disabled_category"></select></td>
+</tr>
+<tr>
+  <td></td>
+  <td><select id="ob_ad_manager_disabled_genre"></select></td>
+</tr>
+<tr>
+  <td>&nbsp;</td>
+  <td class="submit"><input type="button" value="Save Settings" onclick="ModuleObAdManager.save_settings();"></td>
+</tr>
+</tbody>
+</table>
