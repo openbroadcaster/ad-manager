@@ -3,16 +3,16 @@
 class ObAdManagerModule extends OBFModule
 {
 
-	public $name = 'OB Ad Manager';
-	public $description = 'Manage ads by moving them between "enabled" and "disabled" categories.';
+  public $name = 'OB Ad Manager';
+  public $description = 'Manage ads by moving them between "enabled" and "disabled" categories.';
 
-	public function callbacks()
-	{
+  public function callbacks()
+  {
 
-	}
+  }
 
-	public function install()
-	{
+  public function install()
+  {
   
     $this->db->query('CREATE TABLE IF NOT EXISTS `ob_ad_manager` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -26,14 +26,14 @@ class ObAdManagerModule extends OBFModule
       VALUES (NULL, \'ad_manager_access\', \'Manage Ads\', \'OB Ad Manager\'), (NULL, \'ad_manager_settings\', 
       \'Modify Settings\', \'OB Ad Manager\');');
 
-		return true;
+    return true;
 
-	}
+  }
 
-	public function uninstall()
-	{
+  public function uninstall()
+  {
     $this->db->query('DELETE FROM `users_permissions` WHERE category = \'OB Ad Manager\'');
-		return true;
-	}
+    return true;
+  }
 
 }
