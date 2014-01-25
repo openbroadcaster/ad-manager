@@ -3,18 +3,18 @@
 class ObAdManager extends OBFController
 {
 
-	public function __construct()
-	{
-		parent::__construct();
-		$this->user->require_authenticated();
+  public function __construct()
+  {
+    parent::__construct();
+    $this->user->require_authenticated();
     $this->model = $this->load->model('ObAdManager');
-	}
+  }
 
-	public function get_settings()
-	{
+  public function get_settings()
+  {
     $this->user->require_permission('ad_manager_settings or ad_manager_access');
     return array(true,'Category settings.',array('enabled'=>$this->model->get_enabled(),'disabled'=>$this->model->get_disabled()));
-	}
+  }
 
   public function save_settings()
   {

@@ -87,5 +87,5 @@ ModuleObAdManager.save_settings = function()
 
 
 $(document).ready(function() {
-	ModuleObAdManager.init_module();
+  ModuleObAdManager.init_module();
 });
