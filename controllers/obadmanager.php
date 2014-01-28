@@ -82,5 +82,20 @@ class ObAdManager extends OBFController
     $this->model('adjust_media');
     return array(true,'Media adjusted.');
   }
+
+  // if media is archived, remove from ad manager.
+  public function media_archive_callback($hook,$position)
+  {
+    $ids = $this->data('id');
+  
+    // if we just have a single ID, make it into an array so we can proceed on that assumption.
+    if(!is_array($ids)) $ids = array($ids);
+
+    foreach($ids as $id)
+    {
+      $this->db->where('media_id',$id);
+      $this->db->delete('ob_ad_manager');
+    }
+  }
   
 }

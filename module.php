@@ -8,7 +8,7 @@ class ObAdManagerModule extends OBFModule
 
   public function callbacks()
   {
-
+    $this->callback_handler->register_callback('ObAdManager.media_archive_callback','Media.archive','return',0);
   }
 
   public function install()
