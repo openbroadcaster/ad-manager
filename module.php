@@ -19,8 +19,9 @@ class ObAdManagerModule extends OBFModule
   `media_id` int(10) unsigned NOT NULL,
   `timestamp_enable` int(10) unsigned NOT NULL,
   `timestamp_disable` int(10) unsigned NOT NULL,
+  `notes` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1');
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;');
 
     $this->db->query('INSERT INTO `users_permissions` (`id`, `name`, `description`, `category`) 
       VALUES (NULL, \'ad_manager_access\', \'Manage Ads\', \'OB Ad Manager\'), (NULL, \'ad_manager_settings\', 
