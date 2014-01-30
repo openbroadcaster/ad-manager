@@ -170,6 +170,17 @@ ModuleObAdManager.addedit_window = function()
   $('#ob_ad_manager_start_time').timepicker({timeFormat: 'hh:mm:ss',showSecond: true});
   $('#ob_ad_manager_stop_time').timepicker({timeFormat: 'hh:mm:ss',showSecond: true});
 
+  // set to current time (start), one week ahead (stop)
+  var date = new Date();
+  $('#ob_ad_manager_start_date').datepicker('setDate','+0');
+  $('#ob_ad_manager_stop_date').datepicker('setDate','+7');
+
+  var hour = ""+(date.getHours()+1);
+  if(hour.length==1) hour = "0"+hour;
+
+  $('#ob_ad_manager_start_time').val(hour+':00:00');
+  $('#ob_ad_manager_stop_time').val(hour+':00:00');
+
 }
 
 ModuleObAdManager.delete_item = function(confirm)
@@ -241,6 +252,11 @@ ModuleObAdManager.load_settings = function()
       // show device list
       $.each(devices,function(index,device) {
         $('#ob_ad_manager_device_cache_list').append('<div><input type="checkbox" class="ob_ad_manager_clear_cache" value="'+device.id+'"> '+htmlspecialchars(device.name)+'</div>');
+      });
+
+      if(response.data.devices_clear_cache.length) $.each(response.data.devices_clear_cache, function(index,device_id)
+      {
+        $('.ob_ad_manager_clear_cache[value='+device_id+']').attr('checked','checked');
       });
 
     });

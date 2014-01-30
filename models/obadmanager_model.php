@@ -304,9 +304,6 @@ class ObAdManagerModel extends OBFModel
 
     if(!$timezone || !$enabled || !$disabled) return false; // we need these things.
 
-    $enabled = $enabled['id'];
-    $disabled = $disabled['id'];
-
     $now = time();
 
     $items = $this('get_items');
@@ -324,16 +321,16 @@ class ObAdManagerModel extends OBFModel
       $media = $media_model('get_by_id',$item['media_id']);
       if(!$media) continue;
 
-      if($media['genre_id']!=$enabled)
+      if($media['genre_id']!=$enabled['id'])
       {
         $this->db->where('id',$media['id']);
-        $this->db->update('media',array('genre_id'=>$enabled));
+        $this->db->update('media',array('genre_id'=>$enabled['id'],'category_id'=>$enabled['media_category_id']));
         $something_updated = true;
       }
     }
 
     // move to disabled category any media that doesn't belong in enabled category.
-    $this->db->where('genre_id',$enabled);
+    $this->db->where('genre_id',$enabled['id']);
     $medias = $this->db->get('media');
 
     foreach($medias as $media)
@@ -341,7 +338,7 @@ class ObAdManagerModel extends OBFModel
       if(array_search($media['id'],$enabled_media)===false)
       {
         $this->db->where('id',$media['id']);
-        $this->db->update('media',array('genre_id'=>$disabled));
+        $this->db->update('media',array('genre_id'=>$disabled['id'],'category_id'=>$disabled['media_category_id']));
         $something_updated = true;
       }
     }

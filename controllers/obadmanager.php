@@ -13,7 +13,7 @@ class ObAdManager extends OBFController
   public function get_settings()
   {
     $this->user->require_permission('ad_manager_settings or ad_manager_access');
-    return array(true,'Category settings.',array('enabled'=>$this->model->get_enabled(),'disabled'=>$this->model->get_disabled(),'timezone'=>$this->model->get_timezone()));
+    return array(true,'Category settings.',array('enabled'=>$this->model('get_enabled'),'disabled'=>$this->model('get_disabled'),'timezone'=>$this->model('get_timezone'),'devices_clear_cache'=>$this->model('get_devices_clear_cache')));
   }
 
   public function save_settings()
