@@ -208,30 +208,42 @@ ModuleObAdManager.delete_item = function(confirm)
 ModuleObAdManager.load_settings = function()
 {
 
-  api.post('obadmanager','get_settings',{},function(response)
-  {
-    $('#layout_main').html(html.get('modules/ob_ad_manager/settings.html'));
-    $('#ob_ad_manager_timezone').html(html.get('device/tzoptions.html'));
-
-    // fill category list
-    for(var i in settings.categories)
+  api.post('obadmanager','get_settings',{},function(response)     
+  { 
+    api.post('device','device_list', {}, function(devices_response)
     {
-      $('#ob_ad_manager_enabled_category').append('<option value="'+settings.categories[i].id+'">'+htmlspecialchars(settings.categories[i].name)+'</option>');
-      $('#ob_ad_manager_disabled_category').append('<option value="'+settings.categories[i].id+'">'+htmlspecialchars(settings.categories[i].name)+'</option>');
-    }
 
-    $('#ob_ad_manager_enabled_category').change(function() { ModuleObAdManager.settings_update_genre_list('enabled'); });
-    $('#ob_ad_manager_disabled_category').change(function() { ModuleObAdManager.settings_update_genre_list('disabled'); });
+      var devices = devices_response.data;
 
-    if(response.data.timezone) $('#ob_ad_manager_timezone').val(response.data.timezone);
-    if(response.data.enabled) $('#ob_ad_manager_enabled_category').val(response.data.enabled.media_category_id);
-    if(response.data.disabled) $('#ob_ad_manager_disabled_category').val(response.data.disabled.media_category_id);
+      $('#layout_main').html(html.get('modules/ob_ad_manager/settings.html'));
+      $('#ob_ad_manager_timezone').html(html.get('device/tzoptions.html'));
 
-    ModuleObAdManager.settings_update_genre_list('enabled');
-    ModuleObAdManager.settings_update_genre_list('disabled');
+      // fill category list
+      for(var i in settings.categories)
+      {
+        $('#ob_ad_manager_enabled_category').append('<option value="'+settings.categories[i].id+'">'+htmlspecialchars(settings.categories[i].name)+'</option>');
+        $('#ob_ad_manager_disabled_category').append('<option value="'+settings.categories[i].id+'">'+htmlspecialchars(settings.categories[i].name)+'</option>');
+      }
 
-    if(response.data.enabled) $('#ob_ad_manager_enabled_genre').val(response.data.enabled.id);
-    if(response.data.disabled) $('#ob_ad_manager_disabled_genre').val(response.data.disabled.id);
+      $('#ob_ad_manager_enabled_category').change(function() { ModuleObAdManager.settings_update_genre_list('enabled'); });
+      $('#ob_ad_manager_disabled_category').change(function() { ModuleObAdManager.settings_update_genre_list('disabled'); });
+
+      if(response.data.timezone) $('#ob_ad_manager_timezone').val(response.data.timezone);
+      if(response.data.enabled) $('#ob_ad_manager_enabled_category').val(response.data.enabled.media_category_id);
+      if(response.data.disabled) $('#ob_ad_manager_disabled_category').val(response.data.disabled.media_category_id);
+
+      ModuleObAdManager.settings_update_genre_list('enabled');
+      ModuleObAdManager.settings_update_genre_list('disabled');
+
+      if(response.data.enabled) $('#ob_ad_manager_enabled_genre').val(response.data.enabled.id);
+      if(response.data.disabled) $('#ob_ad_manager_disabled_genre').val(response.data.disabled.id);
+
+      // show device list
+      $.each(devices,function(index,device) {
+        $('#ob_ad_manager_device_cache_list').append('<div><input type="checkbox" class="ob_ad_manager_clear_cache" value="'+device.id+'"> '+htmlspecialchars(device.name)+'</div>');
+      });
+
+    });
   });
 
 }
@@ -255,10 +267,16 @@ ModuleObAdManager.save_settings = function()
   var timezone = $('#ob_ad_manager_timezone').val();
   var enabled_id = $('#ob_ad_manager_enabled_genre').val();
   var disabled_id = $('#ob_ad_manager_disabled_genre').val();
+  var devices_clear_cache = [];
+
+  $('.ob_ad_manager_clear_cache').each(function(index,element)
+  {
+    if($(element).is(':checked')) devices_clear_cache.push($(element).val());
+  });
 
   $('#ob_ad_manager_messagebox').hide();
 
-  api.post('obadmanager','save_settings',{'enabled': enabled_id, 'disabled': disabled_id, 'timezone': timezone},function(response)
+  api.post('obadmanager','save_settings',{'enabled': enabled_id, 'disabled': disabled_id, 'timezone': timezone, 'devices_clear_cache': devices_clear_cache},function(response)
   {
     $('#ob_ad_manager_messagebox').text(response.msg).show();
   });

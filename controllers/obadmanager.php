@@ -23,14 +23,16 @@ class ObAdManager extends OBFController
     $enabled_id = $this->data('enabled');
     $disabled_id = $this->data('disabled');
     $timezone = $this->data('timezone');
+    $devices_clear_cache = $this->data('devices_clear_cache');
 
-    $validation = $this->model('validate_settings',$enabled_id,$disabled_id,$timezone);
+    $validation = $this->model('validate_settings',$enabled_id,$disabled_id,$timezone,$devices_clear_cache);
 
     if($validation[0]==false) return $validation;
 
     $this->model('set_enabled',$enabled_id);
     $this->model('set_disabled',$disabled_id);
     $this->model('set_timezone',$timezone);
+    $this->model('set_devices_clear_cache',$devices_clear_cache);
     $this->model('adjust_media');
 
     return array(true,'Settings saved.');

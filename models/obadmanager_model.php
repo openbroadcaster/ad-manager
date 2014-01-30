@@ -50,6 +50,17 @@ class ObAdManagerModel extends OBFModel
     else return false;
   }
 
+  // get devices clear cache array
+  public function get_devices_clear_cache()
+  {
+    $this->db->where('name','ob_ad_manager_devices_clear_cache');
+    $setting = $this->db->get_one('settings');
+
+    // if category doesn't exist, set to false.
+    if($setting) return explode(',',$setting['value']);
+    else return false;
+  }
+
   // set 'enabled' category.
   public function set_enabled($id)
   {
@@ -92,7 +103,23 @@ class ObAdManagerModel extends OBFModel
     else $this->db->insert('settings',array('name'=>'ob_ad_manager_timezone','value'=>$tz));
   }
 
-  public function validate_settings($enabled_id, $disabled_id, $tz)
+  // set devices clear cache
+  public function set_devices_clear_cache($devices)
+  {
+    if(!is_array($devices)) return false;
+
+    $this->db->where('name','ob_ad_manager_devices_clear_cache');
+    $setting = $this->db->get_one('settings');
+
+    if($setting)
+    {
+      $this->db->where('id',$setting['id']);
+      $this->db->update('settings',array('value'=>implode(',',$devices)));
+    }
+    else $this->db->insert('settings',array('name'=>'ob_ad_manager_devices_clear_cache','value'=>implode(',',$devices)));
+  }
+
+  public function validate_settings($enabled_id, $disabled_id, $tz, $devices_clear_cache)
   {
     try 
     {
@@ -110,6 +137,14 @@ class ObAdManagerModel extends OBFModel
 
     if($enabled_id == $disabled_id) 
       return array(false,'The enabled and disabled categories cannot be the same.');
+
+    if(!is_array($devices_clear_cache))
+      return array(false,'An unknown error occured with devices clear cache.');
+  
+    foreach($devices_clear_cache as $device)
+    {
+      if(!$this->db->id_exists('devices',$device)) return array(false,'One or more devices (clear cache) was not found.  Please reload this page and try again.');
+    }
 
     return array(true,'Settings are valid.');
   }
@@ -278,6 +313,8 @@ class ObAdManagerModel extends OBFModel
 
     $enabled_media = array();
 
+    $something_updated = false;
+
     // check media that should be in enabled category. enable if necessary.
     foreach($items['current'] as $item)
     {
@@ -291,6 +328,7 @@ class ObAdManagerModel extends OBFModel
       {
         $this->db->where('id',$media['id']);
         $this->db->update('media',array('genre_id'=>$enabled));
+        $something_updated = true;
       }
     }
 
@@ -304,6 +342,17 @@ class ObAdManagerModel extends OBFModel
       {
         $this->db->where('id',$media['id']);
         $this->db->update('media',array('genre_id'=>$disabled));
+        $something_updated = true;
+      }
+    }
+
+    // clear cache for selected devices if something updated.
+    if($something_updated && $devices_clear_cache = $this('get_devices_clear_cache'))
+    {
+      foreach($devices_clear_cache as $device)
+      {
+        $this->db->where('device_id',$device);
+        $this->db->delete('schedules_media_cache');
       }
     }
 
