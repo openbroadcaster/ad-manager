@@ -1,24 +1,28 @@
-var ModuleObAdManager = new Object();
-
+OBModules.ObAdManager = new Object();
 
 /* Manager Page */
 
-ModuleObAdManager.init_module = function()
+OBModules.ObAdManager.init = function()
 {
-  $('#obmenu-media').append('<li data-permissions="ad_manager_access"><a href="javascript: ModuleObAdManager.load();">Ad Manager</a></li>');
-  $('#obmenu-admin').append('<li data-permissions="ad_manager_settings"><a href="javascript: ModuleObAdManager.load_settings();">Ad Manager Settings</a></li>');
+  OB.Callbacks.add('ready',0,OBModules.ObAdManager.init_menu);
 }
 
-ModuleObAdManager.load = function()
+OBModules.ObAdManager.init_menu = function()
+{
+  OB.UI.addSubMenuItem('media','Ad Manager','obadmanager',OBModules.ObAdManager.load,20,'ad_manager_access');
+  OB.UI.addSubMenuItem('admin','Ad Manager Settings','obadmanager',OBModules.ObAdManager.load_settings,20,'ad_manager_settings');
+}
+
+OBModules.ObAdManager.load = function()
 {
 
-  api.post('obadmanager','get_settings',{},function(settings)
+  OB.API.post('obadmanager','get_settings',{},function(settings)
   {
-    $('#layout_main').html(html.get('modules/ob_ad_manager/manager.html'));
+    OB.UI.replaceMain('modules/ob_ad_manager/manager.html');
 
     if(!settings.data.enabled || !settings.data.disabled || !settings.data.timezone)
     {
-      $('#ob_ad_manager_messagebox').text('The ad manager does not seem to be configured properly.  Please adjust settings in "admin -> ad manager settings", or contact an administrator for assistance.').show();
+      $('#ob_ad_manager_message').obWidget('error','The ad manager does not seem to be configured properly.  Please adjust settings in "admin -> ad manager settings", or contact an administrator for assistance.').show();
       return;
     }
 
@@ -35,43 +39,43 @@ ModuleObAdManager.load = function()
         var item_name = $('.sidebar_search_media_selected').first().attr('data-artist')+' - '+$('.sidebar_search_media_selected').first().attr('data-title');
         var item_type = $('.sidebar_search_media_selected').first().attr('data-type');
 
-        ModuleObAdManager.add_item(item_id,item_name,item_type);
+        OBModules.ObAdManager.add_item(item_id,item_name,item_type);
 
       }
     });
 
-    ModuleObAdManager.get_items();
+    OBModules.ObAdManager.get_items();
 
   });
 }
 
-ModuleObAdManager.get_items = function()
+OBModules.ObAdManager.get_items = function()
 {
 
-  api.post('obadmanager','get_items',{},function(response)
+  OB.API.post('obadmanager','get_items',{},function(response)
   {
     if(!response.status) return;
 
-    ModuleObAdManager.items_cache = {};
+    OBModules.ObAdManager.items_cache = {};
 
     $('#ob_ad_manager_expired tbody').remove();
     $('#ob_ad_manager_current tbody').remove();
     $('#ob_ad_manager_upcoming tbody').remove();
 
-    $('#ob_ad_manager_expired').append(ModuleObAdManager.tbody_html(response.data.expired));
-    $('#ob_ad_manager_current').append(ModuleObAdManager.tbody_html(response.data.current));
-    $('#ob_ad_manager_upcoming').append(ModuleObAdManager.tbody_html(response.data.upcoming));
+    $('#ob_ad_manager_expired').append(OBModules.ObAdManager.tbody_html(response.data.expired));
+    $('#ob_ad_manager_current').append(OBModules.ObAdManager.tbody_html(response.data.current));
+    $('#ob_ad_manager_upcoming').append(OBModules.ObAdManager.tbody_html(response.data.upcoming));
 
     if(!$('#ob_ad_manager_expired tbody').length) $('#ob_ad_manager_expired').append('<tbody><tr><td colspan="4">No ads found.</td></tr></tbody>');
     if(!$('#ob_ad_manager_current tbody').length) $('#ob_ad_manager_current').append('<tbody><tr><td colspan="4">No ads found.</td></tr></tbody>');
     if(!$('#ob_ad_manager_upcoming tbody').length) $('#ob_ad_manager_upcoming').append('<tbody><tr><td colspan="4">No ads found.</td></tr></tbody>');
 
-    $('#ob_ad_manager table tr.ad_item').dblclick(ModuleObAdManager.edit_item);
+    $('#ob_ad_manager table tr.ad_item').dblclick(OBModules.ObAdManager.edit_item);
   });
 
 }
 
-ModuleObAdManager.tbody_html = function(items)
+OBModules.ObAdManager.tbody_html = function(items)
 {
   if(items.length<1) return '';
 
@@ -86,17 +90,19 @@ ModuleObAdManager.tbody_html = function(items)
     $tr.append('<td>'+htmlspecialchars(item.notes)+'</td>');
     $tbody.append('<tr class="ad_item" data-id="'+item.id+'">'+$tr.html()+'</tr>');
 
-    ModuleObAdManager.items_cache[item.id] = item;
+    OBModules.ObAdManager.items_cache[item.id] = item;
   }); 
 
   return '<tbody>'+$tbody.html()+'</tbody>';
 }
 
-ModuleObAdManager.edit_item = function()
+OBModules.ObAdManager.edit_item = function()
 {
-  var item = ModuleObAdManager.items_cache[$(this).attr('data-id')];
+  var item = OBModules.ObAdManager.items_cache[$(this).attr('data-id')];
 
-  ModuleObAdManager.addedit_window();
+  console.log(item);
+
+  OBModules.ObAdManager.addedit_window();
 
   $('#ob_ad_manager_start_date').val(item.start_date);
   $('#ob_ad_manager_start_time').val(item.start_time);
@@ -105,10 +111,12 @@ ModuleObAdManager.edit_item = function()
   $('#ob_ad_manager_item_id').val(item.media_id);
   $('#ob_ad_manager_id').val(item.id);
 
+  $('#ob_ad_manager_item_info').text(item.media_artist+' - '+item.media_title+' (media #'+item.id+')');
+
   $('#ob_ad_manager_notes').val(item.notes);
 }
 
-ModuleObAdManager.add_item = function(item_id,item_name,item_type)
+OBModules.ObAdManager.add_item = function(item_id,item_name,item_type)
 {
 
   this.addedit_window();
@@ -120,7 +128,7 @@ ModuleObAdManager.add_item = function(item_id,item_name,item_type)
 
 }
 
-ModuleObAdManager.save_item = function()
+OBModules.ObAdManager.save_item = function()
 {
 
   fields = new Object();
@@ -136,31 +144,28 @@ ModuleObAdManager.save_item = function()
   fields.id = $('#ob_ad_manager_id').val();
   fields.item_id = $('#ob_ad_manager_item_id').val();
 
-  $('#ob_ad_manager_addedit_messagebox').hide();
-
-  api.post('obadmanager','save_item',fields,function(data) 
+  OB.API.post('obadmanager','save_item',fields,function(data) 
   {
 
     if(data.status==false)
     {
-      $('#ob_ad_manager_addedit_messagebox').text(data.msg).show();
+      $('#ob_ad_manager_addedit_message').obWidget('error',data.msg);
     }
 
     else
     {
-      layout.close_dom_window();
-      ModuleObAdManager.get_items();
+      OB.UI.closeModalWindow();
+      OBModules.ObAdManager.get_items();
     }
 
   });
 
 }
 
-ModuleObAdManager.addedit_window = function()
+OBModules.ObAdManager.addedit_window = function()
 {
 
-  layout.open_dom_window();
-  $('#DOMWindow').html(html.get('modules/ob_ad_manager/manager_addedit.html'));
+  OB.UI.openModalWindow('modules/ob_ad_manager/manager_addedit.html');
 
   // friendly date picker
   $('#ob_ad_manager_start_date').datepicker({ dateFormat: "yy-mm-dd" });
@@ -183,21 +188,21 @@ ModuleObAdManager.addedit_window = function()
 
 }
 
-ModuleObAdManager.delete_item = function(confirm)
+OBModules.ObAdManager.delete_item = function(confirm)
 {
   if(confirm)
   {
-    api.post('obadmanager','delete_item',{ 'id': $('#ob_ad_manager_id').val() }, function(data)
+    OB.API.post('obadmanager','delete_item',{ 'id': $('#ob_ad_manager_id').val() }, function(data)
     {
       if(data.status==true)
       {
-        layout.close_dom_window();
-        ModuleObAdManager.get_items();
+        OB.UI.closeModalWindow();
+        OBModules.ObAdManager.get_items();
       }
 
       else
       {
-        $('#ob_ad_manager_addedit_messagebox').text(data.msg);
+        $('#ob_ad_manager_addedit_message').obWidget('error',data.msg);
       }
     });
 
@@ -205,7 +210,7 @@ ModuleObAdManager.delete_item = function(confirm)
 
   else
   {
-    $('#ob_ad_manager_addedit_messagebox').html('<p>Delete this item?</p><p><input type="button" value="Yes, Delete" onclick="ModuleObAdManager.delete_item(true);"> &nbsp; &nbsp; <input type="button" value="No, Cancel" onclick="$(\'#ob_ad_manager_addedit_messagebox\').hide();"></p>').show();
+    OB.UI.confirm('Delete this item?',function() { OBModules.ObAdManager.delete_item(true); }, 'Yes, Delete', 'No, Cancel', 'delete');
   }
 }
 
@@ -216,35 +221,35 @@ ModuleObAdManager.delete_item = function(confirm)
 
 /* Settings Page */
 
-ModuleObAdManager.load_settings = function()
+OBModules.ObAdManager.load_settings = function()
 {
 
-  api.post('obadmanager','get_settings',{},function(response)     
+  OB.API.post('obadmanager','get_settings',{},function(response)     
   { 
-    api.post('device','device_list', {}, function(devices_response)
+    OB.API.post('device','device_list', {}, function(devices_response)
     {
 
       var devices = devices_response.data;
 
-      $('#layout_main').html(html.get('modules/ob_ad_manager/settings.html'));
-      $('#ob_ad_manager_timezone').html(html.get('device/tzoptions.html'));
+      OB.UI.replaceMain('modules/ob_ad_manager/settings.html');
+      $('#ob_ad_manager_timezone').html(OB.UI.getHTML('device/tzoptions.html'));
 
       // fill category list
-      for(var i in settings.categories)
+      for(var i in OB.Settings.categories)
       {
-        $('#ob_ad_manager_enabled_category').append('<option value="'+settings.categories[i].id+'">'+htmlspecialchars(settings.categories[i].name)+'</option>');
-        $('#ob_ad_manager_disabled_category').append('<option value="'+settings.categories[i].id+'">'+htmlspecialchars(settings.categories[i].name)+'</option>');
+        $('#ob_ad_manager_enabled_category').append('<option value="'+OB.Settings.categories[i].id+'">'+htmlspecialchars(OB.Settings.categories[i].name)+'</option>');
+        $('#ob_ad_manager_disabled_category').append('<option value="'+OB.Settings.categories[i].id+'">'+htmlspecialchars(OB.Settings.categories[i].name)+'</option>');
       }
 
-      $('#ob_ad_manager_enabled_category').change(function() { ModuleObAdManager.settings_update_genre_list('enabled'); });
-      $('#ob_ad_manager_disabled_category').change(function() { ModuleObAdManager.settings_update_genre_list('disabled'); });
+      $('#ob_ad_manager_enabled_category').change(function() { OBModules.ObAdManager.settings_update_genre_list('enabled'); });
+      $('#ob_ad_manager_disabled_category').change(function() { OBModules.ObAdManager.settings_update_genre_list('disabled'); });
 
       if(response.data.timezone) $('#ob_ad_manager_timezone').val(response.data.timezone);
       if(response.data.enabled) $('#ob_ad_manager_enabled_category').val(response.data.enabled.media_category_id);
       if(response.data.disabled) $('#ob_ad_manager_disabled_category').val(response.data.disabled.media_category_id);
 
-      ModuleObAdManager.settings_update_genre_list('enabled');
-      ModuleObAdManager.settings_update_genre_list('disabled');
+      OBModules.ObAdManager.settings_update_genre_list('enabled');
+      OBModules.ObAdManager.settings_update_genre_list('disabled');
 
       if(response.data.enabled) $('#ob_ad_manager_enabled_genre').val(response.data.enabled.id);
       if(response.data.disabled) $('#ob_ad_manager_disabled_genre').val(response.data.disabled.id);
@@ -264,21 +269,21 @@ ModuleObAdManager.load_settings = function()
 
 }
 
-ModuleObAdManager.settings_update_genre_list = function(field)
+OBModules.ObAdManager.settings_update_genre_list = function(field)
 {
   var selected_category = $('#ob_ad_manager_'+field+'_category').val();
 
   $('#ob_ad_manager_'+field+'_genre').find('option').remove();
 
   // fill genre list
-  for(var i in settings.genres)
+  for(var i in OB.Settings.genres)
   {
-    if(settings.genres[i].media_category_id == selected_category)
-      $('#ob_ad_manager_'+field+'_genre').append('<option value="'+settings.genres[i].id+'">'+htmlspecialchars(settings.genres[i].name)+'</option>');
+    if(OB.Settings.genres[i].media_category_id == selected_category)
+      $('#ob_ad_manager_'+field+'_genre').append('<option value="'+OB.Settings.genres[i].id+'">'+htmlspecialchars(OB.Settings.genres[i].name)+'</option>');
   }
 }
 
-ModuleObAdManager.save_settings = function()
+OBModules.ObAdManager.save_settings = function()
 {
   var timezone = $('#ob_ad_manager_timezone').val();
   var enabled_id = $('#ob_ad_manager_enabled_genre').val();
@@ -290,15 +295,9 @@ ModuleObAdManager.save_settings = function()
     if($(element).is(':checked')) devices_clear_cache.push($(element).val());
   });
 
-  $('#ob_ad_manager_messagebox').hide();
-
-  api.post('obadmanager','save_settings',{'enabled': enabled_id, 'disabled': disabled_id, 'timezone': timezone, 'devices_clear_cache': devices_clear_cache},function(response)
+  OB.API.post('obadmanager','save_settings',{'enabled': enabled_id, 'disabled': disabled_id, 'timezone': timezone, 'devices_clear_cache': devices_clear_cache},function(response)
   {
-    $('#ob_ad_manager_messagebox').text(response.msg).show();
+    $('#ob_ad_manager_message').obWidget(!response.status ? 'error' : 'success', response.msg);
   });
 }
 
-
-$(document).ready(function() {
-  ModuleObAdManager.init_module();
-});

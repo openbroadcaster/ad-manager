@@ -2,37 +2,45 @@
 
 <p>When should this ad start and stop?  You can also add notes for your own reference.</p>
 
-<p id="ob_ad_manager_addedit_messagebox" class="messagebox hidden"></p>
+<obwidget type="message" id="ob_ad_manager_addedit_message"></obwidget>
 
-<p class="center bold tbmargin" id="ob_ad_manager_item_info"></p>
+<fieldset id="ob_ad_manager_addedit_form">
 
-<table class="form_table" id="ob_ad_manager_addedit_form">
+<legend id="ob_ad_manager_item_info"></legend>
 
-<tr>
-  <td class="required">Start Date:</td>
-  <td><input size="15" type="text" id="ob_ad_manager_start_date"></td>
-</tr>
-<tr>
-  <td class="required">Start Time:</td>
-  <td><input size="15" type="text" id="ob_ad_manager_start_time"></td>
-</tr>
-<tr>
-  <td class="required">Stop Date:</td>
-  <td><input size="15" type="text" id="ob_ad_manager_stop_date"></td>
-</tr>
-<tr>
-  <td class="required">Stop Time:</td>
-  <td><input size="15" type="text" id="ob_ad_manager_stop_time"></td>
-</tr>
-<tr>
-  <td>Notes:</td>
-  <td><textarea id="ob_ad_manager_notes" style="width: 250px; height: 100px;"></textarea></td>
-</tr>
-<tr>
-  <td>&nbsp;</td>
-  <td class="submit"><input type="button" class="rmargin" value="Save" id="item_properties_save" onclick="ModuleObAdManager.save_item();"><input id="item_properties_cancel" type="button" class="lrmargin" value="Cancel" onclick="$.closeDOMWindow();"><span class="edit_only"><input type="button" class="lmargin" value="Delete" id="item_properties_delete" onclick="ModuleObAdManager.delete_item();"></span></td>
-</tr>
-</table>
+<div class="fieldrow">
+  <label class="required">Start Date</label>
+  <input size="15" type="text" id="ob_ad_manager_start_date">
+</div>
+
+<div class="fieldrow">
+  <label class="required">Start Time</label>
+  <input size="15" type="text" id="ob_ad_manager_start_time">
+</div>
+
+<div class="fieldrow">
+  <label class="required">Stop Date</label>
+  <input size="15" type="text" id="ob_ad_manager_stop_date">
+</div>
+
+<div class="fieldrow">
+  <label class="required">Stop Time</label>
+  <input size="15" type="text" id="ob_ad_manager_stop_time">
+</div>
+
+<div class="fieldrow">
+  <label>Notes</label>
+  <textarea id="ob_ad_manager_notes" style="width: 250px; height: 100px;"></textarea>
+</div>
+</fieldset>
+
+<fieldset>
+<div class="fieldrow">
+  <button class="add" id="item_properties_save" onclick="OBModules.ObAdManager.save_item();">Save</button>
+  <button class="delete edit_only" id="item_properties_delete" onclick="OBModules.ObAdManager.delete_item();">Delete</button>
+  <button id="item_properties_cancel" onclick="OB.UI.closeModalWindow();">Cancel</button>
+</div>
+</fieldset>
 
 <input type="hidden" id="ob_ad_manager_item_id" value="">
 <input type="hidden" id="ob_ad_manager_id" value="">
