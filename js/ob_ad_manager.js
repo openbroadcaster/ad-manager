@@ -121,7 +121,7 @@ OBModules.ObAdManager.add_item = function(item_id,item_name,item_type)
 
   this.addedit_window();
 
-  $('#DOMWindow').find('.edit_only').hide();
+  $('#layout_modal_window').find('.edit_only').hide();
 
   $('#ob_ad_manager_item_id').val(item_id);
   $('#ob_ad_manager_item_info').text(item_name+' (media #'+item_id+')');
