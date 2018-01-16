@@ -57,7 +57,7 @@ class ObAdManagerModel extends OBFModel
     $setting = $this->db->get_one('settings');
 
     // if category doesn't exist, set to false.
-    if($setting) return explode(',',$setting['value']);
+    if(trim($setting['value'])!='') return explode(',',$setting['value']);
     else return false;
   }
 

@@ -5,39 +5,38 @@
 
 <p>Please set the "enabled" and "disabled" category as needed.  Optionally set to have device cache clear whenever a category change is made.</p>
 
-<p></p>
+<obwidget type="message" id="ob_ad_manager_message"></obwidget>
 
-<p class="hidden messagebox" id="ob_ad_manager_messagebox"></p>
+<fieldset>
+<div class="fieldrow">
+  <label class="required">Schedule Timezone</label>
+  <select id="ob_ad_manager_timezone"></select>
+</div>
 
-<table class="tbmargin form_table">
-<tbody>
-<tr>
-  <td class="required">Schedule Timezone:</td>
-  <td><select id="ob_ad_manager_timezone"></select></td>
-</tr>
-<tr>
-  <td class="required">Enabled Category:</td>
-  <td><select id="ob_ad_manager_enabled_category"></select></td>
-</tr>
-<tr>
-  <td></td>
-  <td><select id="ob_ad_manager_enabled_genre"></select></td>
-</tr>
-<tr>
-  <td class="required">Disabled Category:</td>
-  <td><select id="ob_ad_manager_disabled_category"></select></td>
-</tr>
-<tr>
-  <td></td>
-  <td><select id="ob_ad_manager_disabled_genre"></select></td>
-</tr>
-<tr>
-  <td>Clear Device Cache:</td>
-  <td id="ob_ad_manager_device_cache_list"></td>
-</tr>
-<tr>
-  <td>&nbsp;</td>
-  <td class="submit"><input type="button" value="Save Settings" onclick="ModuleObAdManager.save_settings();"></td>
-</tr>
-</tbody>
-</table>
+<div class="fieldrow">
+  <label class="required">Enabled Category</label>
+  <div>
+    <div><select id="ob_ad_manager_enabled_category"></select></div>
+    <div><select id="ob_ad_manager_enabled_genre"></select></div>
+  </div>
+</div>
+
+<div class="fieldrow">
+  <label class="required">Disabled Category</label>
+  <div>
+    <div><select id="ob_ad_manager_disabled_category"></select></div>
+    <div><select id="ob_ad_manager_disabled_genre"></select></div>
+  </div>
+</div>
+
+<div class="fieldrow">
+  <label>Clear Device Cache</label>
+  <div id="ob_ad_manager_device_cache_list"></div>
+</div>
+</fieldset>
+
+<fieldset>
+<div class="fieldrow">
+  <button class="add" onclick="OBModules.ObAdManager.save_settings();">Save Settings</button>
+</div>
+</fieldset>
