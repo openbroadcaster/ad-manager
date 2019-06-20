@@ -1,4 +1,4 @@
-<?
+<?php
 
 class ObAdManagerModule extends OBFModule
 {

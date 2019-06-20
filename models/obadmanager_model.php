@@ -1,4 +1,4 @@
-<?
+<?php
 
 class ObAdManagerModel extends OBFModel
 {
