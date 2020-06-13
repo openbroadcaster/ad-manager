@@ -3,7 +3,7 @@ ObAdManager
 
 Manage ADs or PSA
 
-Admanager has settings for "enabled" and "disabled" media. Select the ads you want to include, and the time frame to play those ads. They are managed into categories; "Upcoming", "Current", and "Expired" based on their timeframe.
+Admanager has settings for "enabled" and "disabled" media. Select and drag the ad media you want to include, and the time frame to play those ads. They are managed into categories; "Upcoming", "Current", and "Expired" based on their timeframe.
  
 If the current date/time is in the timeframe for that media ("Current Ads"), it will get moved to the enabled genre.
  
