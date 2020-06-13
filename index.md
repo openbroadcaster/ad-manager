@@ -1,4 +1,14 @@
-# ObAdManager
+---
+layout: default
+title: index
+---
+
+* TOC
+{:toc}
+
+<a name="dashboard"></a>
+
+## ObAdManager
 ===========
 
 Manage ADs or PSA
@@ -14,3 +24,4 @@ This allows you to schedule the "enabled" genre on playlists. Any enabled ads (w
 Cron job required to adjust the category/genre.
 
 * * * * * wget -qO- --post-data="c=obadmanager&a=adjust_media&d={}" https://IP_of_Server/api.php &> /dev/null
+
