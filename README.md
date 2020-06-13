@@ -9,7 +9,7 @@ If the current date/time is in the timeframe for that media ("Current Ads"), it 
  
 If the current date/time is outside the timeframe for that media ("Expired Ads" and "Upcoming Ads"), it will get moved to the disabled genre.
  
-This allows you to schedule the "enabled" genre on playlists. Any enabled ads (within timeframe) will play while any disabled ads (outside timeframe) will be excluded.
+This allows you to schedule the "enabled" genre on playlists. Any enabled ads (within timeframe) will play while any disabled ads (outside timeframe) will be excluded.  Additional functionality can be used with advanced searches, to purge all items that have expired.
 
 Cron job required to adjust the category/genre.
 
