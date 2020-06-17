@@ -6,8 +6,6 @@ title: index
 * TOC
 {:toc}
 
-<a name="dashboard"></a>
-
 ## AdManager
 ===========
 
