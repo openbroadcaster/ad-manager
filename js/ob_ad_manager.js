@@ -226,13 +226,13 @@ OBModules.ObAdManager.load_settings = function()
 
   OB.API.post('obadmanager','get_settings',{},function(response)     
   { 
-    OB.API.post('device','device_list', {}, function(devices_response)
+    OB.API.post('player','player_list', {}, function(players_response)
     {
 
-      var devices = devices_response.data;
+      var players = players_response.data;
 
       OB.UI.replaceMain('modules/ob_ad_manager/settings.html');
-      $('#ob_ad_manager_timezone').html(OB.UI.getHTML('device/tzoptions.html'));
+      $('#ob_ad_manager_timezone').html(OB.UI.getHTML('player/tzoptions.html'));
 
       // fill category list
       for(var i in OB.Settings.categories)
@@ -254,14 +254,14 @@ OBModules.ObAdManager.load_settings = function()
       if(response.data.enabled) $('#ob_ad_manager_enabled_genre').val(response.data.enabled.id);
       if(response.data.disabled) $('#ob_ad_manager_disabled_genre').val(response.data.disabled.id);
 
-      // show device list
-      $.each(devices,function(index,device) {
-        $('#ob_ad_manager_device_cache_list').append('<div><input type="checkbox" class="ob_ad_manager_clear_cache" value="'+device.id+'"> '+htmlspecialchars(device.name)+'</div>');
+      // show player list
+      $.each(players,function(index,player) {
+        $('#ob_ad_manager_player_cache_list').append('<div><input type="checkbox" class="ob_ad_manager_clear_cache" value="'+player.id+'"> '+htmlspecialchars(player.name)+'</div>');
       });
 
-      if(response.data.devices_clear_cache.length) $.each(response.data.devices_clear_cache, function(index,device_id)
+      if(response.data.players_clear_cache.length) $.each(response.data.players_clear_cache, function(index,player_id)
       {
-        $('.ob_ad_manager_clear_cache[value='+device_id+']').attr('checked','checked');
+        $('.ob_ad_manager_clear_cache[value='+player_id+']').attr('checked','checked');
       });
 
     });
@@ -288,14 +288,14 @@ OBModules.ObAdManager.save_settings = function()
   var timezone = $('#ob_ad_manager_timezone').val();
   var enabled_id = $('#ob_ad_manager_enabled_genre').val();
   var disabled_id = $('#ob_ad_manager_disabled_genre').val();
-  var devices_clear_cache = [];
+  var players_clear_cache = [];
 
   $('.ob_ad_manager_clear_cache').each(function(index,element)
   {
-    if($(element).is(':checked')) devices_clear_cache.push($(element).val());
+    if($(element).is(':checked')) players_clear_cache.push($(element).val());
   });
 
-  OB.API.post('obadmanager','save_settings',{'enabled': enabled_id, 'disabled': disabled_id, 'timezone': timezone, 'devices_clear_cache': devices_clear_cache},function(response)
+  OB.API.post('obadmanager','save_settings',{'enabled': enabled_id, 'disabled': disabled_id, 'timezone': timezone, 'players_clear_cache': players_clear_cache},function(response)
   {
     $('#ob_ad_manager_message').obWidget(!response.status ? 'error' : 'success', response.msg);
   });

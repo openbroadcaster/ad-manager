@@ -13,7 +13,7 @@ class ObAdManager extends OBFController
   public function get_settings()
   {
     $this->user->require_permission('ad_manager_settings or ad_manager_access');
-    return array(true,'Category settings.',array('enabled'=>$this->model('get_enabled'),'disabled'=>$this->model('get_disabled'),'timezone'=>$this->model('get_timezone'),'devices_clear_cache'=>$this->model('get_devices_clear_cache')));
+    return array(true,'Category settings.',array('enabled'=>$this->model('get_enabled'),'disabled'=>$this->model('get_disabled'),'timezone'=>$this->model('get_timezone'),'players_clear_cache'=>$this->model('get_players_clear_cache')));
   }
 
   public function save_settings()
@@ -23,16 +23,16 @@ class ObAdManager extends OBFController
     $enabled_id = $this->data('enabled');
     $disabled_id = $this->data('disabled');
     $timezone = $this->data('timezone');
-    $devices_clear_cache = $this->data('devices_clear_cache');
+    $players_clear_cache = $this->data('players_clear_cache');
 
-    $validation = $this->model('validate_settings',$enabled_id,$disabled_id,$timezone,$devices_clear_cache);
+    $validation = $this->model('validate_settings',$enabled_id,$disabled_id,$timezone,$players_clear_cache);
 
     if($validation[0]==false) return $validation;
 
     $this->model('set_enabled',$enabled_id);
     $this->model('set_disabled',$disabled_id);
     $this->model('set_timezone',$timezone);
-    $this->model('set_devices_clear_cache',$devices_clear_cache);
+    $this->model('set_players_clear_cache',$players_clear_cache);
     $this->model('adjust_media');
 
     return array(true,'Settings saved.');

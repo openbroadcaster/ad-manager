@@ -50,10 +50,10 @@ class ObAdManagerModel extends OBFModel
     else return false;
   }
 
-  // get devices clear cache array
-  public function get_devices_clear_cache()
+  // get players clear cache array
+  public function get_players_clear_cache()
   {
-    $this->db->where('name','ob_ad_manager_devices_clear_cache');
+    $this->db->where('name','ob_ad_manager_players_clear_cache');
     $setting = $this->db->get_one('settings');
 
     // if category doesn't exist, set to false.
@@ -103,23 +103,23 @@ class ObAdManagerModel extends OBFModel
     else $this->db->insert('settings',array('name'=>'ob_ad_manager_timezone','value'=>$tz));
   }
 
-  // set devices clear cache
-  public function set_devices_clear_cache($devices)
+  // set players clear cache
+  public function set_players_clear_cache($players)
   {
-    if(!is_array($devices)) return false;
+    if(!is_array($players)) return false;
 
-    $this->db->where('name','ob_ad_manager_devices_clear_cache');
+    $this->db->where('name','ob_ad_manager_players_clear_cache');
     $setting = $this->db->get_one('settings');
 
     if($setting)
     {
       $this->db->where('id',$setting['id']);
-      $this->db->update('settings',array('value'=>implode(',',$devices)));
+      $this->db->update('settings',array('value'=>implode(',',$players)));
     }
-    else $this->db->insert('settings',array('name'=>'ob_ad_manager_devices_clear_cache','value'=>implode(',',$devices)));
+    else $this->db->insert('settings',array('name'=>'ob_ad_manager_players_clear_cache','value'=>implode(',',$players)));
   }
 
-  public function validate_settings($enabled_id, $disabled_id, $tz, $devices_clear_cache)
+  public function validate_settings($enabled_id, $disabled_id, $tz, $players_clear_cache)
   {
     try 
     {
@@ -138,12 +138,12 @@ class ObAdManagerModel extends OBFModel
     if($enabled_id == $disabled_id) 
       return array(false,'The enabled and disabled categories cannot be the same.');
 
-    if(!is_array($devices_clear_cache))
-      return array(false,'An unknown error occured with devices clear cache.');
+    if(!is_array($players_clear_cache))
+      return array(false,'An unknown error occured with players clear cache.');
   
-    foreach($devices_clear_cache as $device)
+    foreach($players_clear_cache as $player)
     {
-      if(!$this->db->id_exists('devices',$device)) return array(false,'One or more devices (clear cache) was not found.  Please reload this page and try again.');
+      if(!$this->db->id_exists('players',$player)) return array(false,'One or more players (clear cache) was not found.  Please reload this page and try again.');
     }
 
     return array(true,'Settings are valid.');
@@ -343,12 +343,12 @@ class ObAdManagerModel extends OBFModel
       }
     }
 
-    // clear cache for selected devices if something updated.
-    if($something_updated && $devices_clear_cache = $this('get_devices_clear_cache'))
+    // clear cache for selected players if something updated.
+    if($something_updated && $players_clear_cache = $this('get_players_clear_cache'))
     {
-      foreach($devices_clear_cache as $device)
+      foreach($players_clear_cache as $player)
       {
-        $this->db->where('device_id',$device);
+        $this->db->where('player_id',$player);
         $this->db->delete('schedules_media_cache');
       }
     }
