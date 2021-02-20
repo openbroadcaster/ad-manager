@@ -121,7 +121,7 @@ class ObAdManagerModel extends OBFModel
 
   public function validate_settings($enabled_id, $disabled_id, $tz, $players_clear_cache)
   {
-    try 
+    try
     {
       $tz_test = new DateTimeZone($tz);
     }
@@ -135,12 +135,12 @@ class ObAdManagerModel extends OBFModel
     if(!$this->db->id_exists('media_genres',$enabled_id) || !$this->db->id_exists('media_genres',$disabled_id))
       return array(false,'One of the selected categories does not seem to be valid.  Please refresh OpenBroadcaster and try again.');
 
-    if($enabled_id == $disabled_id) 
+    if($enabled_id == $disabled_id)
       return array(false,'The enabled and disabled categories cannot be the same.');
 
     if(!is_array($players_clear_cache))
       return array(false,'An unknown error occured with players clear cache.');
-  
+
     foreach($players_clear_cache as $player)
     {
       if(!$this->db->id_exists('players',$player)) return array(false,'One or more players (clear cache) was not found.  Please reload this page and try again.');
@@ -155,13 +155,13 @@ class ObAdManagerModel extends OBFModel
     if(!$this->get_timezone()) return array(false,'Cannot save this item as the ad manager timezone is not properly configured.');
 
     // required fields?
-    if( empty($data['start_date']) || 
+    if( empty($data['start_date']) ||
         empty($data['start_time']) ||
         empty($data['stop_date']) ||
         empty($data['stop_time'])) return array(false,'One or more required fields were not filled.');
 
     // check if ID is valid (if editing)
-    if($id!==false) 
+    if($id!==false)
     {
       if(!$this->db->id_exists('ob_ad_manager',$id)) return array(false,'The item you are attempting to edit does not appear to exist.');
     }
@@ -191,7 +191,7 @@ class ObAdManagerModel extends OBFModel
 
     foreach($time as $index=>$val)
     {
-      if(count($val)!=3 || !preg_match('/^[0-9]{2}$/',$val[0]) || !preg_match('/^[0-9]{2}$/',$val[1]) || !preg_match('/^[0-9]{2}$/',$val[2]) || 
+      if(count($val)!=3 || !preg_match('/^[0-9]{2}$/',$val[0]) || !preg_match('/^[0-9]{2}$/',$val[1]) || !preg_match('/^[0-9]{2}$/',$val[2]) ||
             $val[0]>23 || $val[1]>59 || $val[2]>59) return array(false,ucwords($indeX).' time is not valid.');
     }
 
@@ -209,7 +209,7 @@ class ObAdManagerModel extends OBFModel
 
   public function get_items()
   {
-    $media_model = $this->load->model('media');
+    $models = OBFModels::get_instance();
 
     $now = time();
 
@@ -219,12 +219,12 @@ class ObAdManagerModel extends OBFModel
     $this->db->where('timestamp_enable',$now,'<=');
     $this->db->where('timestamp_disable',$now,'>');
     $current = $this->db->get('ob_ad_manager');
-  
+
     $this->db->where('timestamp_enable',$now,'>');
     $upcoming = $this->db->get('ob_ad_manager');
 
     $items = array('expired'=>$expired,'current'=>$current,'upcoming'=>$upcoming);
-  
+
     foreach($items as $type=>$tmp)
       foreach($tmp as $index=>$item)
       {
@@ -236,7 +236,7 @@ class ObAdManagerModel extends OBFModel
         $items[$type][$index]['stop_date'] = $datetime[0];
         $items[$type][$index]['stop_time'] = $datetime[1];
 
-        $media = $media_model('get_by_id',$item['media_id']);
+        $media = $models->media('get_by_id', ['id' => $item['media_id']]);
         $items[$type][$index]['media_artist'] = $media['artist'];
         $items[$type][$index]['media_title'] = $media['title'];
       }
@@ -246,7 +246,7 @@ class ObAdManagerModel extends OBFModel
 
   public function save_item($data,$id=false)
   {
-    
+
     $row = array();
     $row['media_id'] = $data['item_id'];
     $row['notes'] = $data['notes'];
@@ -295,8 +295,7 @@ class ObAdManagerModel extends OBFModel
   // adjust media into appropriate categories.
   public function adjust_media()
   {
-
-    $media_model = $this->load->model('media');
+    $models = OBFModels::get_instance();
 
     $timezone = $this('get_timezone');
     $enabled = $this('get_enabled');
@@ -318,7 +317,7 @@ class ObAdManagerModel extends OBFModel
 
       $enabled_media[] = $item['media_id'];
 
-      $media = $media_model('get_by_id',$item['media_id']);
+      $media = $models->media('get_by_id', ['id' => $item['media_id']]);
       if(!$media) continue;
 
       if($media['genre_id']!=$enabled['id'])
