@@ -20,3 +20,7 @@ Select\Create a combination of category and genre.  Select\Create genres for cat
 Cron job required to adjust the category/genre.
 
 * * * * * wget -qO- --post-data="c=obadmanager&a=adjust_media&d={}" https://IP_of_Server/api.php &> /dev/null
+
+NOTES:
+
+- in Firefox, disable adblocker plugins or use Chrome browser to see scheduled catagories and items
