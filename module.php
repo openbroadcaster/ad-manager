@@ -3,8 +3,8 @@
 class ObAdManagerModule extends OBFModule
 {
 
-  public $name = 'OB Ad Manager';
-  public $description = 'Manage ads by moving them between "enabled" and "disabled" categories.';
+  public $name = 'Ad Manager v1.0';
+  public $description = 'Schedule ads to start and stop by moving them between "enabled" and "disabled" categories.';
 
   public function callbacks()
   {
