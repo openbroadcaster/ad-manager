@@ -39,7 +39,7 @@ Only one category may be managed. In example we have AdManager running PSA Audio
 
 1. In AdManager Settings, Select the Category of media to be managed and choose the `Enabled` and `Disabled` for the category.
 
-![AdManager Settings](/img/ADManager_Settings.png){: .screenshot}
+![AdManager Settings](/img/ADManager_Settings.png){: .screenshot} settings
 
 ## Cron Job
 
