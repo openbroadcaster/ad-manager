@@ -27,7 +27,7 @@ When media finishes it's run, it changes the genre to disabled automatically and
 
 Double click from From Expired list and individually delete expired items. Delete multiple expired items by running a saved search for genre = Disable.  Highlight and delete all media items marked Disabled (expired) to remove from AdManager and library. 
 
-![AdManager](/img/ADManager.png ){: .screenshot}
+![AdManager](/img/ADManager.png){: .screenshot} ad-manager
 
 #### AdManager Setup
 
