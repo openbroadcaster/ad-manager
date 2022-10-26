@@ -27,7 +27,7 @@ When media finishes it's run, it changes the genre to disabled automatically and
 
 Double click from From Expired list and individually delete expired items. Delete multiple expired items by running a saved search for genre = Disable.  Highlight and delete all media items marked Disabled (expired) to remove from AdManager and library. 
 
-![AdManager](/img/ADManager.png){: .screenshot} ad-manager
+![AdManager](/img/ADManager.png){: .screenshot} 
 
 #### AdManager Setup
 
@@ -39,11 +39,13 @@ Only one category may be managed. In example we have AdManager running PSA Audio
 
 1. In AdManager Settings, Select the Category of media to be managed and choose the `Enabled` and `Disabled` for the category.
 
-![AdManager Settings](/img/ADManager_Settings.png){: .screenshot} settings
+![AdManager Settings](/img/ADManager_Settings.png){: .screenshot} 
 
 ## Cron Job
 
 Cron job required to adjust the category/genre.
 
+~~~~ 
 * * * * * wget -qO- --post-data="c=obadmanager&a=adjust_media&d={}" https://IP_of_Server/api.php &> /dev/null
+~~~~ 
 
