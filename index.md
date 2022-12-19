@@ -3,13 +3,13 @@ layout: default
 title: index
 ---
 
+# AdManager #
+{:.no_toc}
+
 * TOC
 {:toc}
 
-## AdManager
-===========
-
-#  Manage ADs or PSA
+##  Manage ADs or PSA
 
 Admanager has settings for "enabled" and "disabled" media. Select the ads you want to include, and the time frame to play those ads. They are managed into categories; "Upcoming", "Current", and "Expired" based on their timeframe.
  
@@ -29,7 +29,7 @@ Double click from From Expired list and individually delete expired items. Delet
 
 ![AdManager](/img/ADManager.png){: .screenshot} 
 
-#### AdManager Setup
+## AdManager Setup
 
 Only one category may be managed. In example we have AdManager running PSA Audio.
 
