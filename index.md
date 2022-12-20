@@ -11,21 +11,21 @@ title: index
 
 ##  Manage ADs or PSA
 
-Admanager has settings for "enabled" and "disabled" media. Select the ads you want to include, and the time frame to play those ads. They are managed into categories; "Upcoming", "Current", and "Expired" based on their timeframe.
+Admanager has settings for "enabled" and "disabled" media. Select the ads you want to include, and the time frame to play those ads. They are managed into categories; `Upcoming`, `Current`, and `Expired` based on their timeframe.
  
-If the current date/time is in the timeframe for that media ("Current Ads"), it will get moved to the enabled genre. If the current date/time is outside the timeframe for that media ("Expired Ads" and "Upcoming Ads"), it will get moved to the disabled genre.
+If the current date/time is in the timeframe for that media __"Current Ads"__, it will get moved to the `enabled` genre. If the current date/time is outside the timeframe for that media __"Expired Ads"__ and __"Upcoming Ads"__, it will get moved to the `disabled` genre.
  
-This allows you to schedule the "enabled" genre on playlists. Any enabled ads (within timeframe) will play while any disabled ads (outside timeframe) will be excluded.  Additional functionality can be used with advanced searches, to purge all items that have expired.
+This allows you to schedule the `enabled` genre on playlists. Any enabled ads (within timeframe) will play while any disabled ads (outside timeframe) will be excluded.  Additional functionality can be used with __Advanced searches__, to purge all items that have expired.
 
 ## Using AdManager
 
 Drag media item into AdManager.  Window pops up, Set start and stop dates.
 
-A more automated scheme is to create a dynamic segment in scheduled Play List for your media (IE your media has the word “CFET” in description, Category is “PSA Audio” and Genre is “Enabled”  in PL with this criteria.  When Playlist looks to play Dynamic Segment, it will look for media that has “CFET” in description, Category “PSA Audio” and is Genre “Enabled”.   Adding future media items to library with Dynamic segment set will ingest into Playlist with matching searches.
+A more automated scheme is to create a dynamic segment in a scheduled Play List for your ad media __EG__ _Media has the word __CFET__ in description, Category is __PSA Audio__ and Genre is __Enabled__ in PL with this criteria.  When Playlist looks to play Dynamic Segment, it will look for media that has “CFET” in description, Category “PSA Audio” and is Genre “Enabled”.   Adding future media items to library with Dynamic segment set will ingest into Playlist with matching searches.
 
-When media finishes it's run, it changes the genre to disabled automatically and places the media in the Expired queue.  Filters will not play items that have genre “Disabled”
+When media finishes it's run, it changes the genre to disabled automatically and places the media in the `Expired` queue.  Filters will not play items that have genre `Disabled`
 
-Double click from From Expired list and individually delete expired items. Delete multiple expired items by running a saved search for genre = Disable.  Highlight and delete all media items marked Disabled (expired) to remove from AdManager and library. 
+Double click from From Expired list and individually delete expired items. Delete multiple expired items by running a saved search for "Genre = Disable".  Highlight and delete all media items marked Disabled (expired) to remove from AdManager and library. 
 
 ![AdManager](/img/ADManager.png){: .screenshot} 
 
