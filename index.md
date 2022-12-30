@@ -2,6 +2,9 @@
 layout: default
 title: index
 ---
+<br/>
+
+![ad-manager](https://user-images.githubusercontent.com/4603894/210111996-6bce6715-da38-4e86-8f05-f0100ad022a2.png)
 
 # AdManager #
 {:.no_toc}
