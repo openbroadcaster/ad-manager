@@ -348,7 +348,7 @@ class ObAdManagerModel extends OBFModel
       foreach($players_clear_cache as $player)
       {
         $this->db->where('player_id',$player);
-        $this->db->delete('schedules_media_cache');
+        $this->db->delete('shows_cache');
       }
     }
 
