@@ -91,7 +91,7 @@ OBModules.ObAdManager.tbody_html = function(items)
     $tbody.append('<tr class="ad_item" data-id="'+item.id+'">'+$tr.html()+'</tr>');
 
     OBModules.ObAdManager.items_cache[item.id] = item;
-  }); 
+  });
 
   return '<tbody>'+$tbody.html()+'</tbody>';
 }
@@ -144,7 +144,7 @@ OBModules.ObAdManager.save_item = function()
   fields.id = $('#ob_ad_manager_id').val();
   fields.item_id = $('#ob_ad_manager_item_id').val();
 
-  OB.API.post('obadmanager','save_item',fields,function(data) 
+  OB.API.post('obadmanager','save_item',fields,function(data)
   {
 
     if(data.status==false)
@@ -224,9 +224,9 @@ OBModules.ObAdManager.delete_item = function(confirm)
 OBModules.ObAdManager.load_settings = function()
 {
 
-  OB.API.post('obadmanager','get_settings',{},function(response)     
-  { 
-    OB.API.post('player','player_list', {}, function(players_response)
+  OB.API.post('obadmanager','get_settings',{},function(response)
+  {
+    OB.API.post('players','search', {}, function(players_response)
     {
 
       var players = players_response.data;
