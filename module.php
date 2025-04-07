@@ -14,18 +14,19 @@ class ObAdManagerModule extends OBFModule
     public function install()
     {
 
-        $this->db->query('CREATE TABLE IF NOT EXISTS `ob_ad_manager` (
-    `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-    `media_id` int(10) unsigned NOT NULL,
-    `timestamp_enable` int(10) unsigned NOT NULL,
-    `timestamp_disable` int(10) unsigned NOT NULL,
-    `notes` text NOT NULL,
-    PRIMARY KEY (`id`)
-    ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;');
+        $this->db->query(<<<SQL
+        CREATE TABLE IF NOT EXISTS `ob_ad_manager` (
+            `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+            `media_id` int(10) unsigned NOT NULL,
+            `timestamp_enable` int(10) unsigned NOT NULL,
+            `timestamp_disable` int(10) unsigned NOT NULL,
+            `notes` text NOT NULL,
+            PRIMARY KEY (`id`)
+        ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
+        SQL);
 
-        $this->db->query('INSERT INTO `users_permissions` (`id`, `name`, `description`, `category`)
-        VALUES (NULL, \'ad_manager_access\', \'Manage Ads\', \'OB Ad Manager\'), (NULL, \'ad_manager_settings\',
-        \'Modify Settings\', \'OB Ad Manager\');');
+        $this->permission_enable('OB Ad Manager', 'ad_manager_access', 'Manage Ads');
+        $this->permission_enable('OB Ad Manager', 'ad_manager_settings', 'Modify Settings');
 
         return true;
 
@@ -33,13 +34,18 @@ class ObAdManagerModule extends OBFModule
 
     public function uninstall()
     {
-        $this->db->query('DELETE FROM `users_permissions` WHERE category = \'OB Ad Manager\'');
+        $this->permission_disable('ad_manager_access');
+        $this->permission_disable('ad_manager_settings');
+
         return true;
     }
 
     public function purge()
     {
         $this->db->query('DROP TABLE IF EXISTS `ob_ad_manager`');
+
+        $this->permission_delete('ad_manager_access');
+        $this->permission_delete('ad_manager_settings');
 
         return true;
     }
