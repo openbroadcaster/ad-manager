@@ -1,8 +1,8 @@
 <?php
 
-namespace OB\Modules\ObAdManager\Cron;
+namespace OpenBroadcaster\Modules\ObAdManager\Cron;
 
-use OB\Classes\Base\Cron;
+use OpenBroadcaster\Classes\Base\Cron;
 
 class AdjustMedia extends Cron
 {
