@@ -2,7 +2,7 @@
 
 namespace OpenBroadcaster\Modules\ObAdManager\Cron;
 
-use OpenBroadcaster\Classes\Base\Cron;
+use OpenBroadcaster\Base\Cron;
 
 class AdjustMedia extends Cron
 {
