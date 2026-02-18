@@ -1,6 +1,8 @@
 <?php
 
-class ObAdManagerUpdate20250310 extends OBUpdate
+use OpenBroadcaster\Base\Update;
+
+class ObAdManagerUpdate20250310 extends Update
 {
     public function items()
     {
