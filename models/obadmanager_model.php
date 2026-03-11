@@ -1,6 +1,8 @@
 <?php
 
-class ObAdManagerModel extends OBFModel
+use OpenBroadcaster\Base\Model;
+
+class ObAdManagerModel extends Model
 {
 
   // get 'enabled' category. return false if category doesn't exist.

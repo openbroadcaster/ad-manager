@@ -1,6 +1,8 @@
 <?php
 
-class ObAdManager extends OBFController
+use OpenBroadcaster\Base\Controller;
+
+class ObAdManager extends Controller
 {
 
   public function __construct()
@@ -58,7 +60,7 @@ class ObAdManager extends OBFController
 
     $id = $this->data('id');
     if(empty($id)) $id = false;
-    
+
     $validate = $this->model('validate_item',$data,$id);
     if(!$validate[0]) return $validate;
 
@@ -89,7 +91,7 @@ class ObAdManager extends OBFController
   public function media_archive_callback($hook,$position)
   {
     $ids = $this->data('id');
-  
+
     // if we just have a single ID, make it into an array so we can proceed on that assumption.
     if(!is_array($ids)) $ids = array($ids);
 
@@ -99,5 +101,5 @@ class ObAdManager extends OBFController
       $this->db->delete('ob_ad_manager');
     }
   }
-  
+
 }

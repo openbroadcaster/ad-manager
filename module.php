@@ -1,6 +1,8 @@
 <?php
 
-class ObAdManagerModule extends OBFModule
+use OpenBroadcaster\Base\Module;
+
+class ObAdManagerModule extends Module
 {
 
     public $name = 'Ad Manager v1.0';
